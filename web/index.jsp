@@ -8,9 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-    <title>$Title$</title>
+    <title>Quản lý User</title>
   </head>
   <body>
-  $END$
+  <h1>Quản lý Users</h1>
+  <a href="user"><button value="Enter Site">ENTER SIZE</button></a>
   </body>
 </html>

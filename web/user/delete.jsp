@@ -28,10 +28,14 @@
             </tr>
             <tr>
                 <td><button type = "submit">YES</button></td>
-                <td><button><a href="/user">NO</a></button></td>
+
+<%--                <td><button><a href="user?action">NO</a></button></td>--%>
             </tr>
         </table>
-        <a class = "return" href="/user">Return to the list</a>
+        <button style="margin-top: 30px;width: auto">
+
+            <a class = "return" href="user?action=show">Return to the list</a>
+        </button>
     </form>
 </div>
 </body>

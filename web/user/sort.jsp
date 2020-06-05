@@ -28,7 +28,7 @@
             <th>Country</th>
             <th>Actions</th>
         </tr>
-        <c:forEach var="user" items="${listUser}">
+        <c:forEach var="user" items="${sortList}">
             <tr>
                 <td><c:out value="${user.id}"/></td>
                 <td><c:out value="${user.name}"/></td>
@@ -42,7 +42,7 @@
 
         </c:forEach>
         <tr>
-            <td ><a href="user?action=show">Sort</a></td>
+            <td><a href="user?action=show">Sort</a></td>
             <td>
                 <a href="user?action=sort&type=name">Sort</a>
             </td>

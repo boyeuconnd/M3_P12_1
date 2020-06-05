@@ -1,0 +1,22 @@
+table,td{
+    border:1px solid black;
+    border-collapse: collapse;
+    padding:5px 5px;
+}
+button{
+    width:60px;
+    /*   margin-left:30px; */
+
+}
+div{
+    text-align:center;
+}
+table{
+    margin: 0 auto;
+    /*align-content: center;*/
+    text-align: center;
+}
+.messenger{
+    color: green;
+    font-size: 20px;
+}

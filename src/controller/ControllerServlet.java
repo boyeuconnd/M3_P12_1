@@ -31,12 +31,41 @@ public class ControllerServlet extends HttpServlet {
                 insertUser(request,response);
                 break;
             case "edit":
-//                updateUser(request,response);
+                updateUser(request,response);
                 break;
             case "delete":
                 deleteConfirm(request,response);
                 break;
+            default:
+                break;
         }
+    }
+
+    private void updateUser(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
+        String country = request.getParameter("country");
+        User updateUser = new User(id,name,email,country);
+        RequestDispatcher dispatcher;
+        try {
+            if(userDAO.updateUser(updateUser)){
+                request.setAttribute("messenger","User Updated");
+                dispatcher=request.getRequestDispatcher("user/editConfirm.jsp");
+                dispatcher.forward(request,response);
+            }else {
+                dispatcher = request.getRequestDispatcher("404.jsp");
+                dispatcher.forward(request,response);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     private void deleteConfirm(HttpServletRequest request, HttpServletResponse response) {
@@ -100,6 +129,12 @@ public class ControllerServlet extends HttpServlet {
                 case "delete":
                     showDeleteConfirm(request, response);
                     break;
+                case "show":
+                    listUser(request,response);
+                    break;
+                case "sort":
+                    softList(request,response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
@@ -110,7 +145,29 @@ public class ControllerServlet extends HttpServlet {
 
     }
 
+    private void softList(HttpServletRequest request, HttpServletResponse response) {
+        List<User> sortList = null;
+        String type = request.getParameter("type");
+        if(type.equals("name")){
+            sortList = userDAO.sortByName();
+        }else if(type.equals("country")){
+            sortList= userDAO.sortByCountry();
+        }
+        request.setAttribute("sortList",sortList);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/sort.jsp");
+        try {
+            dispatcher.forward(request,response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) {
+        int id = Integer.parseInt(request.getParameter("id"));
+        User editUser = userDAO.selectUser(id);
+        request.setAttribute("editUser",editUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
         try {
             dispatcher.forward(request,response);
@@ -155,4 +212,5 @@ public class ControllerServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
 }

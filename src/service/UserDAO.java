@@ -21,7 +21,8 @@ public class UserDAO implements IUsersDao {
     private static final String SELECT_ALL_USERS = "select * from users";
     private static final String DELETE_USERS_SQL = "delete from users where id = ?;";
     private static final String UPDATE_USERS_SQL = "update users set name = ?,email= ?, country =? where id = ?;";
-
+    private static final String SORT_BY_NAME = "select * from users order by name";
+    private static final String SORT_BY_COUNTRY = "select * from users order by country";
 
     public UserDAO() {}
 
@@ -90,7 +91,7 @@ public class UserDAO implements IUsersDao {
         try (Connection connection = getConnection();
 
              // Step 2:Create a statement using connection object
-             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS);) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_USERS)) {
             System.out.println(preparedStatement);
             // Step 3: Execute the query or update query
             ResultSet rs = preparedStatement.executeQuery();
@@ -110,6 +111,27 @@ public class UserDAO implements IUsersDao {
     }
 
     @Override
+    public List<User> sortByName() {
+        List<User> sortList = new ArrayList<>();
+        try{
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SORT_BY_NAME);
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String email = rs.getString(3);
+                String country = rs.getString(4);
+                sortList.add(new User(id,name,email,country));
+            }
+        }catch (SQLException e){
+
+        }
+
+        return sortList;
+    }
+
+    @Override
     public boolean deleteUser(int id) throws SQLException {
         boolean rowDeleted;
         try (
@@ -123,6 +145,37 @@ public class UserDAO implements IUsersDao {
 
     @Override
     public boolean updateUser(User user) throws SQLException {
-        return false;
+        boolean rowUpdate;
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_USERS_SQL);
+            statement.setString(1,user.getName());
+            statement.setString(2, user.getEmail());
+            statement.setString(3, user.getCountry());
+            statement.setInt(4, user.getId());
+
+            rowUpdate = statement.executeUpdate()>0;
+        return rowUpdate;
+
+    }
+
+
+    public List<User> sortByCountry() {
+        List<User> sortList = new ArrayList<>();
+        try{
+            Connection connection = getConnection();
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(SORT_BY_COUNTRY);
+            while (rs.next()){
+                int id = rs.getInt(1);
+                String name = rs.getString(2);
+                String email = rs.getString(3);
+                String country = rs.getString(4);
+                sortList.add(new User(id,name,email,country));
+            }
+        }catch (SQLException e){
+
+        }
+
+        return sortList;
     }
 }

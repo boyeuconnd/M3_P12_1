@@ -20,7 +20,7 @@
 
         </c:if>
     </p>
-    <a class = "return" href="/user">Return to the list</a>
+    <a class = "return" href="user?action=show">Return to the list</a>
 
 </div>
 </body>

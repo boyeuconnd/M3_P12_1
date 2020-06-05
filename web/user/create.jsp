@@ -15,7 +15,7 @@
 <center>
     <h1>User Management</h1>
     <h2>
-        <a href="user?action=users">List All Users</a>
+        <a href="user?action=users">Return to List</a>
     </h2>
 </center>
 <div align="center">
