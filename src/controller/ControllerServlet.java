@@ -97,7 +97,7 @@ public class ControllerServlet extends HttpServlet {
         String country = request.getParameter("country");
         newUser = new User(name,email,country);
         try {
-            userDAO.insertUser(newUser);
+            userDAO.insertUserStore(newUser);
             request.setAttribute("messenger","User was Added");
             RequestDispatcher dispatcher = request.getRequestDispatcher("/user/create.jsp");
             dispatcher.forward(request,response);
@@ -135,6 +135,9 @@ public class ControllerServlet extends HttpServlet {
                 case "sort":
                     softList(request,response);
                     break;
+                case "permision":
+                    addUserPermision(request,response);
+                    break;
                 default:
                     listUser(request, response);
                     break;
@@ -143,6 +146,14 @@ public class ControllerServlet extends HttpServlet {
             throw new ServletException(ex);
         }
 
+    }
+
+    private void addUserPermision(HttpServletRequest request, HttpServletResponse response) {
+        User user = new User("kien", "kienhoang@gmail.com", "vn");
+
+        int[] permision = {1, 2, 4};
+
+        userDAO.addUserTransaction(user, permision);
     }
 
     private void softList(HttpServletRequest request, HttpServletResponse response) {
@@ -166,7 +177,7 @@ public class ControllerServlet extends HttpServlet {
 
     private void showEditForm(HttpServletRequest request, HttpServletResponse response) {
         int id = Integer.parseInt(request.getParameter("id"));
-        User editUser = userDAO.selectUser(id);
+        User editUser = userDAO.getUserById(id);
         request.setAttribute("editUser",editUser);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/edit.jsp");
         try {
